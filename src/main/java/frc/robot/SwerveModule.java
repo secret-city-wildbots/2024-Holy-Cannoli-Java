@@ -86,7 +86,8 @@ public class SwerveModule {
       int azimuthMotorID,
       double driveGearRatio,
       double azimuthGearRatio,
-      TalonFXConfiguration driveMotorConfigs) {
+      TalonFXConfiguration driveMotorConfigs,
+      TalonFXConfiguration azimuthMotorConfigs) {
     // Initialize Motors
     // NOTE: These are just setup for Holicanoli. Uncomment lines 82 and 83 when testing with the real robot
     // m_driveMotor = new TalonFX(driveMotorID);
@@ -96,6 +97,7 @@ public class SwerveModule {
 
     // Set drive motor configs
     m_driveMotor.getConfigurator().apply(driveMotorConfigs);
+    m_azimuthMotor.getConfigurator().apply(azimuthMotorConfigs);
 
     m_driveRatio = driveGearRatio;
     m_azimuthRatio = azimuthGearRatio;

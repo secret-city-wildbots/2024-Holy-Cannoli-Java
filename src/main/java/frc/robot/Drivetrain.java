@@ -49,15 +49,16 @@ public class Drivetrain {
   public static final double driveGearRatio = 6.12;
   public static final double azimuthGearRatio = 21.4285;
   //Jasper is a bit special
-  // Get Swerve Module Drive Motor Confugrations
-  TalonFXConfiguration[] configs = swerveModuleConfigs();
+  // Get Swerve Module Drive and Azimuth Motor Confugrations
+  TalonFXConfiguration[] driveConfigs = swerveModuleDriveConfigs();
+  TalonFXConfiguration[] azimuthConfigs = swerveModuleAzimuthConfigs();
 
   // NOTE: setup to be used with Holicanoli uncomment line 52 to use with the real robot.
   // private final SwerveModule m_module0 = new SwerveModule(10, 43, driveGearRatio, azimuthGearRatio);
-  private final SwerveModule m_module0 = new SwerveModule(10, 20, driveGearRatio, azimuthGearRatio, configs[0]);
-  private final SwerveModule m_module1 = new SwerveModule(11, 21, driveGearRatio, azimuthGearRatio, configs[1]);
-  private final SwerveModule m_module2 = new SwerveModule(12, 22, driveGearRatio, azimuthGearRatio, configs[2]);
-  private final SwerveModule m_module3 = new SwerveModule(13, 23, driveGearRatio, azimuthGearRatio, configs[3]);
+  private final SwerveModule m_module0 = new SwerveModule(10, 20, driveGearRatio, azimuthGearRatio, driveConfigs[0], azimuthConfigs[0]);
+  private final SwerveModule m_module1 = new SwerveModule(11, 21, driveGearRatio, azimuthGearRatio, driveConfigs[1], azimuthConfigs[1]);
+  private final SwerveModule m_module2 = new SwerveModule(12, 22, driveGearRatio, azimuthGearRatio, driveConfigs[2], azimuthConfigs[2]);
+  private final SwerveModule m_module3 = new SwerveModule(13, 23, driveGearRatio, azimuthGearRatio, driveConfigs[3], azimuthConfigs[3]);
 
   private final Pigeon2 m_pigeon = new Pigeon2(6);
 
@@ -148,7 +149,7 @@ public class Drivetrain {
         });
   }
 
-  private TalonFXConfiguration[] swerveModuleConfigs() {
+  private TalonFXConfiguration[] swerveModuleDriveConfigs() {
     /*
      * configs will be an array of TalonFX Configurations (4 total - 1 for each swerve module)
      * 
@@ -157,7 +158,7 @@ public class Drivetrain {
      *         - ReverseLimitEnable
      *       This is because we have the shifters sensors connected to the motor controller input.
      */
-    TalonFXConfiguration[] configs = new TalonFXConfiguration[4];
+    TalonFXConfiguration[] driveConfigs = new TalonFXConfiguration[4];
 
     /*
      * Swerve Module Drive Motor Configs (Front Right)
@@ -165,10 +166,10 @@ public class Drivetrain {
      * Note: We need to set the motor output to be CCW (counter clockwise), becuase we have the bevel
      * gears facing inwards.
      */
-    configs[0] = new TalonFXConfiguration();
-    configs[0].HardwareLimitSwitch.ForwardLimitEnable = false;
-    configs[0].HardwareLimitSwitch.ReverseLimitEnable = false;
-    configs[0].MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    driveConfigs[0] = new TalonFXConfiguration();
+    driveConfigs[0].HardwareLimitSwitch.ForwardLimitEnable = false;
+    driveConfigs[0].HardwareLimitSwitch.ReverseLimitEnable = false;
+    driveConfigs[0].MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
     
     /*
      * Swerve Module Drive Motor Configs (Front Left)
@@ -176,10 +177,10 @@ public class Drivetrain {
      * Note: We need to set the motor output to be CW (clockwise), because we have the bevel gears facing
      * inwards.
      */
-    configs[1] = new TalonFXConfiguration();
-    configs[1].HardwareLimitSwitch.ForwardLimitEnable = false;
-    configs[1].HardwareLimitSwitch.ReverseLimitEnable = false;
-    configs[1].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    driveConfigs[1] = new TalonFXConfiguration();
+    driveConfigs[1].HardwareLimitSwitch.ForwardLimitEnable = false;
+    driveConfigs[1].HardwareLimitSwitch.ReverseLimitEnable = false;
+    driveConfigs[1].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     /*
      * Swerve Module Drive Motor Configs (Back Left)
@@ -187,10 +188,10 @@ public class Drivetrain {
      * Note: We need to set the motor output to be CW (clockwise), because we have the bevel gears facing
      * inwards.
      */
-    configs[2] = new TalonFXConfiguration();
-    configs[2].HardwareLimitSwitch.ForwardLimitEnable = false;
-    configs[2].HardwareLimitSwitch.ReverseLimitEnable = false;
-    configs[2].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    driveConfigs[2] = new TalonFXConfiguration();
+    driveConfigs[2].HardwareLimitSwitch.ForwardLimitEnable = false;
+    driveConfigs[2].HardwareLimitSwitch.ReverseLimitEnable = false;
+    driveConfigs[2].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
 
     /*
      * Swerve Module Drive Motor Configs (Back Right)
@@ -198,12 +199,31 @@ public class Drivetrain {
      * Note: We need to set the motor output to be CCW (counter clockwise), becuase we have the bevel
      * gears facing inwards.
      */
-    configs[3] = new TalonFXConfiguration();
-    configs[3].HardwareLimitSwitch.ForwardLimitEnable = false;
-    configs[3].HardwareLimitSwitch.ReverseLimitEnable = false;
-    configs[3].MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    driveConfigs[3] = new TalonFXConfiguration();
+    driveConfigs[3].HardwareLimitSwitch.ForwardLimitEnable = false;
+    driveConfigs[3].HardwareLimitSwitch.ReverseLimitEnable = false;
+    driveConfigs[3].MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
 
-    return configs;
+    return driveConfigs;
+  }
+  private TalonFXConfiguration[] swerveModuleAzimuthConfigs() {
+    // TODO: comment correctly; this is same as drive configs but they're azimuths
+
+    TalonFXConfiguration[] azimuthConfigs = new TalonFXConfiguration[4];
+
+    azimuthConfigs[0] = new TalonFXConfiguration();
+    azimuthConfigs[0].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    azimuthConfigs[1] = new TalonFXConfiguration();
+    azimuthConfigs[1].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    azimuthConfigs[2] = new TalonFXConfiguration();
+    azimuthConfigs[2].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    azimuthConfigs[3] = new TalonFXConfiguration();
+    azimuthConfigs[3].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+
+    return azimuthConfigs;
   }
   
   public void advantageScope(XboxController controller) {
