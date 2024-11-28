@@ -54,11 +54,13 @@ public class SwerveModule {
   private final TalonFX m_azimuthMotor;
 
   // Gains tuned using ZN method (tuned on holicanoli without a load)
-  private final PIDController m_drivePIDController = new PIDController(0.07386364, 0.0, 0.0);
+  private final PIDController m_drivePIDController = new PIDController(0.013686, 0.0, 0.0);
+  // private final PIDController m_drivePIDController = new PIDController(0.07386364, 0.0, 0.0);
   //private final PIDController m_drivePIDController = new PIDController(0.07386364, 0.4166666, 0.0);
 
   // Azimuth PID Without Feedforward
-  private final PIDController m_azimuthPIDController = new PIDController(0.13204545,0.4166666,0.0);
+  // private final PIDController m_azimuthPIDController = new PIDController(13.694, 0.0, 0.0);
+   private final PIDController m_azimuthPIDController = new PIDController(0.13204545,0.4166666,0.0);
 
   // Gains are for example purposes only - must be determined for your own robot!
   // private final ProfiledPIDController m_azimuthPIDController =
@@ -71,7 +73,7 @@ public class SwerveModule {
 
   // Gains are for example purposes only - must be determined for your own robot!
   private final SimpleMotorFeedforward m_driveFeedforward = new SimpleMotorFeedforward(0.1, 0.3);
-  private final SimpleMotorFeedforward m_azimuthFeedforward = new SimpleMotorFeedforward(0.15, 0.0125);
+  private final SimpleMotorFeedforward m_azimuthFeedforward = new SimpleMotorFeedforward(0.032291, 23.767);
 
   /**
    * Constructs a SwerveModule with a drive motor, azimuth motor, drive encoder and azimuth encoder.
@@ -316,6 +318,6 @@ public class SwerveModule {
     // NOTE: Uncomment below code for testing on the real robot
     m_driveMotor.set(0.0);
     m_azimuthMotor.set(azimuthOutput);
-    // m_azimuthMotor.set(azimuthOutput + azimuthFeedforward);
+    //m_azimuthMotor.set(azimuthOutput + m_azimuthFeedforward);
   }
 }

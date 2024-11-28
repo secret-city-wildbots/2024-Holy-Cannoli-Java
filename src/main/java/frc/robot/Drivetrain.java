@@ -18,10 +18,14 @@ import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StructPublisher;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.characterization.SwerveModuleSysId;
 
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.hardware.Pigeon2;
 import com.ctre.phoenix6.signals.InvertedValue;
+import com.ctre.phoenix6.signals.NeutralModeValue;
 
 /** Represents a swerve drive style drivetrain. */
 public class Drivetrain {
@@ -75,8 +79,51 @@ public class Drivetrain {
         }
       );
 
+  // SysId stuff
+  private final SwerveModuleSysId m_swerveModule = new SwerveModuleSysId(10, 20);
+
   public Drivetrain() {
     m_pigeon.reset();
+  }
+
+  public void sysId(XboxController driverController)
+  {
+    System.out.println("In SysId");
+    // Drive motor characterization
+    
+    // When the A button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kA.value)
+      .onTrue(m_swerveModule.sysIdQuasistatic(SysIdRoutine.Direction.kForward));
+
+    // When the B button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kB.value)
+      .onTrue(m_swerveModule.sysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+    // When the Y button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kY.value)
+      .onTrue(m_swerveModule.sysIdDynamic(SysIdRoutine.Direction.kForward));
+    
+    // When the X button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kX.value)
+      .onTrue(m_swerveModule.sysIdDynamic(SysIdRoutine.Direction.kReverse));
+
+    // Azimuth
+
+    // When the Left Bumber button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kLeftBumper.value)
+      .onTrue(m_swerveModule.turnSysIdQuasistatic(SysIdRoutine.Direction.kForward));
+
+    // When the Left Trigger button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kLeftStick.value)
+      .onTrue(m_swerveModule.turnSysIdQuasistatic(SysIdRoutine.Direction.kReverse));
+
+    // When the Right Bumber button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kRightBumper.value)
+      .onTrue(m_swerveModule.turnSysIdDynamic(SysIdRoutine.Direction.kForward));
+    
+    // When the Right Stick button is pressed, schedule the command
+    new JoystickButton(driverController, XboxController.Button.kRightStick.value)
+      .onTrue(m_swerveModule.turnSysIdDynamic(SysIdRoutine.Direction.kReverse));
   }
 
   /**
@@ -170,6 +217,7 @@ public class Drivetrain {
     driveConfigs[0].HardwareLimitSwitch.ForwardLimitEnable = false;
     driveConfigs[0].HardwareLimitSwitch.ReverseLimitEnable = false;
     driveConfigs[0].MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    driveConfigs[0].MotorOutput.NeutralMode = NeutralModeValue.Coast;
     
     /*
      * Swerve Module Drive Motor Configs (Front Left)
@@ -181,6 +229,7 @@ public class Drivetrain {
     driveConfigs[1].HardwareLimitSwitch.ForwardLimitEnable = false;
     driveConfigs[1].HardwareLimitSwitch.ReverseLimitEnable = false;
     driveConfigs[1].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    driveConfigs[1].MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     /*
      * Swerve Module Drive Motor Configs (Back Left)
@@ -192,6 +241,7 @@ public class Drivetrain {
     driveConfigs[2].HardwareLimitSwitch.ForwardLimitEnable = false;
     driveConfigs[2].HardwareLimitSwitch.ReverseLimitEnable = false;
     driveConfigs[2].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    driveConfigs[2].MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     /*
      * Swerve Module Drive Motor Configs (Back Right)
@@ -203,6 +253,7 @@ public class Drivetrain {
     driveConfigs[3].HardwareLimitSwitch.ForwardLimitEnable = false;
     driveConfigs[3].HardwareLimitSwitch.ReverseLimitEnable = false;
     driveConfigs[3].MotorOutput.Inverted = InvertedValue.CounterClockwise_Positive;
+    driveConfigs[3].MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     return driveConfigs;
   }
@@ -213,15 +264,19 @@ public class Drivetrain {
 
     azimuthConfigs[0] = new TalonFXConfiguration();
     azimuthConfigs[0].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    azimuthConfigs[0].MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     azimuthConfigs[1] = new TalonFXConfiguration();
     azimuthConfigs[1].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    azimuthConfigs[1].MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     azimuthConfigs[2] = new TalonFXConfiguration();
     azimuthConfigs[2].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    azimuthConfigs[2].MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     azimuthConfigs[3] = new TalonFXConfiguration();
     azimuthConfigs[3].MotorOutput.Inverted = InvertedValue.Clockwise_Positive;
+    azimuthConfigs[3].MotorOutput.NeutralMode = NeutralModeValue.Coast;
 
     return azimuthConfigs;
   }
