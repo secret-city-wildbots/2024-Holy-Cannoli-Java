@@ -4,8 +4,9 @@
 
 package frc.robot;
 
-// Java List
+// Path Planner Libraries
 import com.pathplanner.lib.commands.PathPlannerAuto;
+import com.pathplanner.lib.auto.NamedCommands;
 
 // WPI Xbox Controller Library
 import edu.wpi.first.wpilibj.XboxController;
@@ -19,7 +20,7 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Constants.OIConstants;
 
 // 4265 Commands
-import frc.robot.commands.DriveCommands;
+import frc.robot.commands.*;
 
 // 4265 Subsystems
 import frc.robot.subsystems.drive.SwerveDrive;
@@ -42,6 +43,9 @@ public class RobotContainer {
     // Configure the default commands
     configureDefaultCommands();
 
+    // register named commands
+    registerNamedCommands();
+
     // Configure the button bindings
     configureButtonBindings();
   }
@@ -59,6 +63,14 @@ public class RobotContainer {
             () -> -m_driverController.getRightX()
         )
     );
+  }
+
+  /**
+   * Use this method to register named commands for path planner.
+   */
+  private void registerNamedCommands() {
+    // Register HelloWorld
+     NamedCommands.registerCommand("HelloWorld", HelloWorldCommand.helloWorldCommand());
   }
 
   /**
